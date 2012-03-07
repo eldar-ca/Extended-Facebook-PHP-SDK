@@ -151,18 +151,19 @@ class Facebook_Core extends Facebook {
 	 * @return string CamelCase function name
 	 **/	
 	protected function get_new_function_name($name){
-		// replace _ with white space to create words
-		// upper case words
-		$new_names = explode(" ", ucwords(str_replace("_", " ", $name)));
-		
-		// make the first character of the funcation name lower case
-		$new_name = strtolower(array_shift($new_names)) . implode("", $new_names); // to make sure it works with version lower than PHP 5.3
-		
+		$new_name = preg_replace('/([a-z])_([a-z])/e', '"$1".ucfirst("$2")', $name);
 		return $new_name;
 	}
 
+	/**
+	 * Convert the CamelCased function name to an underscored funtion name
+	 *
+	 * @var name string CamelCase function name
+	 * @return string function name with underscore
+	 **/	
+	protected function get_old_function_name($name){
+		$new_name = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $name));
+		return $new_name;
+	}
 	
 }
-
-
-
